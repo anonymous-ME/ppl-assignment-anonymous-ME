@@ -16,13 +16,18 @@ public class Girl {
     private String name;
     private int attractiveness;
     private double maintenance_budget;
-    private String intelligence;
+    private int intelligence;
     private boolean committed = false;
     private int happiness;
     private Boy bf;
-    ArrayList<Gift> gifts =new ArrayList<Gift>();
+    ArrayList<Gift> gifts =new ArrayList<>();
+    
+    //Intl. level
+    public static final int CHOOSY = 0;
+    public static final int NORMAL = 1;
+    public static final int DESPERATE = 2;
 
-    public Girl(String name, int attractiveness, double maintenance_budget, String intelligence , int happiness ,boolean committed , Boy bf) {
+    public Girl(String name, int attractiveness, double maintenance_budget, int intelligence , int happiness ,boolean committed , Boy bf) {
         this.name = name;
         this.attractiveness = attractiveness;
         this.maintenance_budget = maintenance_budget;
@@ -56,12 +61,14 @@ public class Girl {
         this.maintenance_budget = maintenance_budget;
     }
 
-    public String getIntelligence() {
+    public int getIntelligence() {
         return intelligence;
     }
 
-    public void setIntelligence(String intelligence) {
+    public void setIntelligence(int intelligence) {
         this.intelligence = intelligence;
+        if(intelligence>2 | intelligence<0)
+            this.intelligence = -1;
     }
     
     public boolean isCommitted() {
@@ -89,6 +96,34 @@ public class Girl {
     }
     
     //Functions
-
+    
+    void takeGift(Gift gift){
+        gifts.add(gift);
+        this.setHappiness(gift.getValue()*10);
+        bf.setHappiness(gift.getValue()*10); // Giving Happiness to BF
+        this.setMaintenance_budget(this.getMaintenance_budget()-gift.getValue());
+        bf.setBudget(bf.getBudget() - gift.getValue());
+    }
+    
+    Boolean isDateble(Boy bf){
+        if(bf.getBudget() < this.getMaintenance_budget())
+            return false;
+        else
+            return true;
+    }
+    
+    void startDating(Boy bf){
+        bf.setGf(this);
+        this.setBf(bf);
+        this.setCommitted(true);
+    }
+    
+    void breakUP(){
+        bf.setGf(null);
+        bf.setCommitted(false);
+        
+        this.setBf(null);
+        this.setCommitted(false);
+    }
 
 }
