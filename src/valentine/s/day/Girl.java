@@ -27,14 +27,13 @@ public class Girl {
     public static final int NORMAL = 1;
     public static final int DESPERATE = 2;
 
-    public Girl(String name, int attractiveness, double maintenance_budget, int intelligence , int happiness ,boolean committed , Boy bf) {
+    public Girl(String name, int attractiveness, double maintenance_budget, int intelligence , int happiness ,boolean committed) {
         this.name = name;
         this.attractiveness = attractiveness;
         this.maintenance_budget = maintenance_budget;
         this.intelligence = intelligence;
         this.happiness = happiness;
         this.committed = committed;
-        this.bf = bf;
     }
 
     public String getName() {
@@ -125,5 +124,11 @@ public class Girl {
         this.setBf(null);
         this.setCommitted(false);
     }
+
+    @Override
+    public String toString() {
+        return  name + "," + attractiveness + "," + maintenance_budget + "," + intelligence + "," + happiness + "," + committed;
+    }
+    
 
 }

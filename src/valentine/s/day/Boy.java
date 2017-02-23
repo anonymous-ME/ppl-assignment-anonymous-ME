@@ -24,14 +24,14 @@ public class Boy {
     public static final int GENEROUS = 1;
     public static final int GEEKS = 2;
     
-    public Boy(String name, int attractiveness, int intelligence, double budget, int happiness ,boolean committed , Girl gf) {
+    public Boy(String name, int attractiveness, double budget, int intelligence, int happiness , boolean committed) {
         this.name = name;
         this.attractiveness = attractiveness;
         this.intelligence = intelligence;
         this.budget = budget;
         this.happiness = happiness;
         this.committed = committed;
-        this.gf = gf;
+        //this.gf = gf;
     }
 
     public String getName() {
@@ -140,5 +140,9 @@ public class Boy {
                     gf.takeGift(new Gift(Gift.ESSENTIAL));
         }
         giftCount++;
+    }
+    @Override
+    public String toString() {
+        return  name + "," + attractiveness + "," + budget + "," + intelligence + "," + happiness + "," + committed;
     }
 }
