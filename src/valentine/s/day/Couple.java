@@ -16,7 +16,7 @@ package valentine.s.day;
  *
  * @author affan
  */
-public class Couple {
+public class Couple implements Comparable<Couple>{
     
     private Boy bf;
     private Girl gf;
@@ -54,5 +54,11 @@ public class Couple {
     public String toString(){
         return gf.getName()+"<-->"+bf.getName();
     }
+
+    @Override
+    public int compareTo(Couple o) {
+        return o.getHappiness() < this.getHappiness() ? -1 : 1;
+    }
+    
     
 }

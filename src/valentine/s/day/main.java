@@ -16,6 +16,8 @@ import Affan_IIT2015002.CSV2J;
 import Affan_IIT2015002.J2CSV;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -452,9 +454,15 @@ public class main extends javax.swing.JFrame {
                 }
                 break;
             case 5:
+                JOptionPane.showMessageDialog(this, "The happy couple is also compatible.");
+                couples.stream().forEach((c) -> {
+                    c.startGifting();
+                });
+                log.append("\n-----SORTED ON THE BASIS OF HAPPINESS-----");
+                Collections.sort(couples);
                 for(Couple c:couples){
                     c.startGifting();
-                    log.append("\n"+c.toString()+"Gift Type:"+c.getGf().gifts.get(0).giftType()+" Happyness : "+c.getHappiness());
+                    log.append("\n"+c.toString()+" [ Gift Type:"+c.getGf().gifts.get(0).giftType()+" Happyness : "+c.getHappiness()+" ]");
                 }
                 
                 break;
