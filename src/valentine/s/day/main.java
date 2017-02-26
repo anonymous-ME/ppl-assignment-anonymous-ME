@@ -15,9 +15,15 @@ package valentine.s.day;
 import Affan_IIT2015002.CSV2J;
 import Affan_IIT2015002.J2CSV;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
@@ -82,6 +88,8 @@ public class main extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -287,6 +295,7 @@ public class main extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
         jMenuItem1.setText("EXIT");
         jMenuItem1.setToolTipText("EXIT THE APP.");
@@ -296,6 +305,16 @@ public class main extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem1);
+        jMenu1.add(jSeparator3);
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("SAVE LOG");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -306,7 +325,7 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem3.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setText("About");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -348,7 +367,7 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        log.append("\n"+task.getSelectedItem());
+        log.append("\n["+getTimeStamp()+"] "+task.getSelectedItem());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
@@ -389,7 +408,7 @@ public class main extends javax.swing.JFrame {
                 int count_boy,count_girl;
                 count_girl = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter the number of girls to create."));
                 count_boy = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter the number of boys to create."));
-                log.append("\nCreating boys and girls....");
+                log.append("\n["+getTimeStamp()+"] Creating boys and girls....");
                 for(int i = 0;i<count_boy;i++){
                     Boy boy = new Boy(randomName(),randomInt(11),randomDouble(100.0,1000.0),randomInt(3),0,false);
                     boys.add(boy);
@@ -398,31 +417,31 @@ public class main extends javax.swing.JFrame {
                     Girl girl = new Girl(randomName(),randomInt(11),randomDouble(100.0,1000.0),randomInt(3),0,false);
                     girls.add(girl);
                 }
-                log.append("\nTask completed.");
+                log.append("\n["+getTimeStamp()+"] Task completed.");
                 break;
             case 1:
                 try{
                     //SAVE GIRLS
                     J2CSV conv = new J2CSV(",",girl_loc.getText(),girls);
                     conv.createCSV();
-                    log.append("\nGirls saved at "+conv.getCSVpath());
+                    log.append("\n["+getTimeStamp()+"] Girls saved at "+conv.getCSVpath());
                     //SAVING BOYS
                     conv.setObj(boys);
                     conv.setCSVpath(boy_loc.getText());
                     conv.createCSV();
-                    log.append("\nBoys saved at "+conv.getCSVpath());
+                    log.append("\n["+getTimeStamp()+"] Boys saved at "+conv.getCSVpath());
                 }catch(Exception e){
-                    log.append("\nError :"+e.getMessage());
+                    log.append("\n["+getTimeStamp()+"] Error :"+e.getMessage());
                 }
                 break;
             case 2:
                 boys.clear();
                 girls.clear();
                 couples.clear();
-                log.append("\nAll list clear...");
+                log.append("\n["+getTimeStamp()+"] All list clear...");
                 break;
             case 3:
-                log.append("\nGetting girls & boys from CSV...");
+                log.append("\n["+getTimeStamp()+"] Getting girls & boys from CSV...");
                 
                 CSV2J conv = new CSV2J(",",girl_loc.getText(),Girl.class.getName());
                 girls = (ArrayList<Object>) conv.getObj();
@@ -431,10 +450,10 @@ public class main extends javax.swing.JFrame {
                 conv.setObjClassName(Boy.class.getName());
                 boys = (ArrayList<Object>) conv.getObj();
                 
-                log.append("\nTask completed.");
+                log.append("\n["+getTimeStamp()+"] Task completed.");
                 break;
             case 4:
-                log.append("\nAllocating boyfriend to all girls...");
+                log.append("\n["+getTimeStamp()+"] Allocating boyfriend to all girls...");
                 couples.clear();
                 
                 for(Object g: girls){
@@ -448,7 +467,7 @@ public class main extends javax.swing.JFrame {
                             Couple temp = new Couple(((Boy)b),((Girl) g));
                             couples.add(temp);
                             
-                            log.append("\n"+temp.toString());
+                            log.append("\n["+getTimeStamp()+"] "+temp.toString());
                             break;
                         }
                 }
@@ -458,18 +477,53 @@ public class main extends javax.swing.JFrame {
                 couples.stream().forEach((c) -> {
                     c.startGifting();
                 });
-                log.append("\n-----SORTED ON THE BASIS OF HAPPINESS-----");
+                log.append("\n["+getTimeStamp()+"] -----SORTED ON THE BASIS OF HAPPINESS-----");
                 Collections.sort(couples);
                 for(Couple c:couples){
-                    log.append("\n"+c.toString()+" [ Gift Type:"+c.getGf().gifts.get(0).giftType()+" Happyness : "+c.getHappiness()+" ]");
+                    log.append("\n["+getTimeStamp()+"] "+c.toString()+" [ Gift Type:"+c.getGf().gifts.get(0).giftType()+" Happyness : "+c.getHappiness()+" ]");
                 }
                 
                 break;
             default:
-                log.append("\nWRONG OPTION SELECTED.");
+                log.append("\n["+getTimeStamp()+"] WRONG OPTION SELECTED.");
                 break;
         }
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        String log_txt = log.getText();
+        jFileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if(f.getName().endsWith(".LOG") | f.getName().endsWith(".log"))
+                    return true;
+                else
+                    return false;
+            }
+
+            @Override
+            public String getDescription() {
+                return "LOG FILE";
+            }
+        });
+        jFileChooser.showDialog(this, "SELECT");
+        if(jFileChooser.getSelectedFile() != null){
+            PrintWriter pw = null;
+            try {
+                File log_file = jFileChooser.getSelectedFile();
+                pw = new PrintWriter(log_file);
+                pw.write(log_txt);
+                pw.flush();
+                pw.close();
+                JOptionPane.showMessageDialog(this, "Log saved successfully!!");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                pw.close();
+            }
+        }
+        
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 //RANDOM FUNCTIONS
     
 String randomName(){
@@ -490,7 +544,11 @@ Double randomDouble(Double max,Double min){
     Random random = new Random();
     return (min + (max - min) * random.nextDouble());
 }
-
+String getTimeStamp(){
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+    return sdf.format(timestamp);
+}
     /**
      * @param args the command line arguments
      */
@@ -545,11 +603,13 @@ Double randomDouble(Double max,Double min){
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JTextArea log;
     private javax.swing.JComboBox<String> task;
     // End of variables declaration//GEN-END:variables
